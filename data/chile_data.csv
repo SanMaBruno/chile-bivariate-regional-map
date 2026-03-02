@@ -1,17 +1,17 @@
-shapeID,x,y,name
-47653553B40993810137393,1,1,RegiÃ³n de Antofagasta
-47653553B1207481020383,2,1,RegiÃ³n de Arica y Parinacota
-47653553B71653813080592,3,1,RegiÃ³n de Atacama
-47653553B77266651052380,1,2,RegiÃ³n de AysÃ©n del Gral.IbaÃ±ez del Campo
-47653553B91907313612474,2,2,RegiÃ³n de Coquimbo
-47653553B84299910343297,3,2,RegiÃ³n de La AraucanÃ­a
-47653553B69224850096491,1,3,RegiÃ³n de Los Lagos
-47653553B67595840047202,2,3,RegiÃ³n de Los RÃ­os
-47653553B86325292267162,3,3,RegiÃ³n de Magallanes y AntÃ¡rtica Chilena
-47653553B32293817275864,1,1,RegiÃ³n de Ãuble
-47653553B97418467345315,2,1,RegiÃ³n de TarapacÃ¡
-47653553B5611469222723,3,1,RegiÃ³n de ValparaÃ­so
-47653553B66835736668351,1,2,RegiÃ³n del BÃ­o-BÃ­o
-47653553B66141875659978,2,2,RegiÃ³n del Libertador Bernardo O'Higgins
-47653553B65340542415201,3,2,RegiÃ³n del Maule
-47653553B78904739401519,1,3,RegiÃ³n Metropolitana de Santiago
+shapeID,name,nombre,region_slug,pobreza_2022_pct,pobreza_2024_pct,cambio_pobreza_pp_2022_2024,direccion_cambio_pobreza,cambio_pobreza_significativo_95,pobreza_extrema_2022_pct,pobreza_extrema_2024_pct,cambio_pobreza_extrema_pp_2022_2024,direccion_cambio_pobreza_extrema,cambio_pobreza_extrema_significativo_95,x,y
+47653553B40993810137393,Antofagasta,Antofagasta,antofagasta,19.5,16.4,-3.1,baja,si,8.6,7.1,-1.5,baja,no,16.4,-3.1
+47653553B1207481020383,Arica y Parinacota,Arica y Parinacota,arica-y-parinacota,25.3,21.4,-3.9,baja,si,11.5,9.9,-1.6,baja,no,21.4,-3.9
+47653553B71653813080592,Atacama,Atacama,atacama,21.2,18.6,-2.6,baja,si,9.9,7.4,-2.5,baja,si,18.6,-2.6
+47653553B77266651052380,Aysén,Aysén,aysen,14.9,14.3,-0.6,baja,no,5.6,5.3,-0.3,baja,no,14.3,-0.6
+47653553B91907313612474,Coquimbo,Coquimbo,coquimbo,24.3,20.7,-3.6,baja,si,10.8,9.1,-1.7,baja,no,20.7,-3.6
+47653553B84299910343297,La Araucanía,La Araucanía,la-araucania,32.0,28.6,-3.4,baja,si,13.7,13.0,-0.7,baja,no,28.6,-3.4
+47653553B69224850096491,Los Lagos,Los Lagos,los-lagos,21.4,16.5,-4.9,baja,si,9.0,6.4,-2.6,baja,si,16.5,-4.9
+47653553B67595840047202,Los Ríos,Los Ríos,los-rios,20.8,22.3,1.5,sube,no,7.3,8.5,1.2,sube,no,22.3,1.5
+47653553B86325292267162,Magallanes,Magallanes,magallanes,14.7,9.9,-4.8,baja,si,6.2,4.2,-2.0,baja,no,9.9,-4.8
+47653553B32293817275864,Ñuble,Ñuble,nuble,29.6,23.9,-5.7,baja,si,13.7,10.3,-3.4,baja,si,23.9,-5.7
+47653553B97418467345315,Tarapacá,Tarapacá,tarapaca,26.8,20.8,-6.0,baja,si,12.6,9.0,-3.6,baja,si,20.8,-6.0
+47653553B5611469222723,Valparaíso,Valparaíso,valparaiso,20.9,17.8,-3.1,baja,si,8.6,6.8,-1.8,baja,si,17.8,-3.1
+47653553B66835736668351,Biobío,Biobío,biobio,22.0,19.3,-2.7,baja,si,9.4,7.2,-2.2,baja,si,19.3,-2.7
+47653553B66141875659978,O'Higgins,O'Higgins,ohiggins,21.1,17.9,-3.2,baja,si,9.0,7.0,-2.0,baja,si,17.9,-3.2
+47653553B65340542415201,Maule,Maule,maule,26.1,24.3,-1.8,baja,no,10.6,10.1,-0.5,baja,no,24.3,-1.8
+47653553B78904739401519,Metropolitana,Metropolitana,metropolitana,16.5,13.3,-3.2,baja,si,6.4,5.0,-1.4,baja,si,13.3,-3.2
