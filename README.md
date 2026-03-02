@@ -13,7 +13,7 @@
   <a href="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
 </p>
 
-![Vista previa del mapa](docs/assets/geoBoundaries-CHL-ADM1-PREVIEW.png)
+![Vista previa del mapa](docs/assets/map.png)
 
 ## Resumen
 
@@ -64,7 +64,7 @@ El objetivo es entregar una lectura rápida y defendible para análisis territor
 │   └── fuentes_casen/
 ├── docs/
 │   └── assets/
-│       └── geoBoundaries-CHL-ADM1-PREVIEW.png
+│       └── map.png
 └── scripts/
     └── merge_casen_pobreza.py
 ```
