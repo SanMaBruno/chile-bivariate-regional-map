@@ -1,48 +1,109 @@
-/**
- * tooltip.js — Parametric tooltip for bivariate map
- *
- * Receives column names at init — no hardcoded fields.
- * Plain text, solid background, clean borders.
- */
+let tooltipEl = null;
 
-let tooltip, varA, varB;
+let tooltipConfig = {
+  keyA: "x",
+  keyB: "y",
+  keySig: "cambio_pobreza_significativo_95",
+  labelA: "Pobreza 2024",
+  labelB: "Cambio 2022–2024",
+  labelSig: "Significancia 95%",
+  nameKey: "name"
+};
 
-function initTooltip({ keyA, keyB } = {}) {
-  varA = keyA;
-  varB = keyB;
-  tooltip = d3.select("body")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+function formatearNumero(valor, decimales = 1) {
+  const n = Number(valor);
+  if (!Number.isFinite(n)) return "Sin dato";
+  return new Intl.NumberFormat("es-CL", {
+    minimumFractionDigits: decimales,
+    maximumFractionDigits: decimales
+  }).format(n);
 }
 
-function showTooltip(event, d) {
-  if (!d) return;
-  const valA = d[varA], valB = d[varB];
-  const arrow = valB > 0 ? "\u25B2" : "\u25BC";
-  const changeClass = valB > 0 ? "change-up" : "change-down";
+function formatearPorcentaje(valor) {
+  const n = Number(valor);
+  if (!Number.isFinite(n)) return "Sin dato";
+  return `${formatearNumero(n, 1)} %`;
+}
 
-  tooltip
-    .html(`
-      <strong>${d.name || d.nuts_id}</strong>
-      <span class="tooltip-country">${d.country || ""}</span>
+function formatearPuntosPorcentuales(valor) {
+  const n = Number(valor);
+  if (!Number.isFinite(n)) return "Sin dato";
+
+  const texto = formatearNumero(Math.abs(n), 1);
+  if (n > 0) return `+${texto} pp`;
+  if (n < 0) return `-${texto} pp`;
+  return `0,0 pp`;
+}
+
+function formatearSignificancia(valor) {
+  const v = String(valor ?? "").trim().toLowerCase();
+
+  if (["si", "sí", "significativa", "true", "1"].includes(v)) {
+    return "Significativa";
+  }
+
+  if (["no", "no significativa", "false", "0"].includes(v)) {
+    return "No significativa";
+  }
+
+  return "Sin dato";
+}
+
+export function initTooltip(config = {}) {
+  tooltipConfig = { ...tooltipConfig, ...config };
+
+  if (!tooltipEl) {
+    tooltipEl = document.createElement("div");
+    tooltipEl.className = "tooltip";
+    tooltipEl.style.position = "fixed";
+    tooltipEl.style.pointerEvents = "none";
+    tooltipEl.style.opacity = "0";
+    tooltipEl.style.zIndex = "9999";
+    document.body.appendChild(tooltipEl);
+  }
+}
+
+export function showTooltip(event, datum) {
+  if (!tooltipEl) return;
+
+  const regionName =
+    datum?.[tooltipConfig.nameKey] ||
+    datum?.name ||
+    datum?.nombre ||
+    "Región sin nombre";
+
+  const valorA = formatearPorcentaje(datum?.[tooltipConfig.keyA]);
+  const valorB = formatearPuntosPorcentuales(datum?.[tooltipConfig.keyB]);
+  const valorSig = formatearSignificancia(datum?.[tooltipConfig.keySig]);
+
+  tooltipEl.innerHTML = `
+    <div class="tooltip-card">
+      <div class="tooltip-title">${regionName}</div>
+
       <div class="tooltip-row">
-        <span class="tooltip-label">GHG per capita</span>
-        <span class="tooltip-value">${valA.toFixed(1)} t</span>
+        <span>${tooltipConfig.labelA}</span>
+        <strong>${valorA}</strong>
       </div>
+
       <div class="tooltip-row">
-        <span class="tooltip-label">Change 2013\u20132023</span>
-        <span class="tooltip-value ${changeClass}">${arrow} ${Math.abs(valB).toFixed(1)}%</span>
+        <span>${tooltipConfig.labelB}</span>
+        <strong class="${Number(datum?.[tooltipConfig.keyB]) <= 0 ? "tooltip-good" : "tooltip-bad"}">${valorB}</strong>
       </div>
-    `)
-    .style("left", (event.pageX + 14) + "px")
-    .style("top", (event.pageY - 28) + "px")
-    .transition().duration(120)
-    .style("opacity", 1);
+
+      <div class="tooltip-row">
+        <span>${tooltipConfig.labelSig}</span>
+        <strong>${valorSig}</strong>
+      </div>
+    </div>
+  `;
+
+  const offset = 16;
+  tooltipEl.style.left = `${event.clientX + offset}px`;
+  tooltipEl.style.top = `${event.clientY + offset}px`;
+  tooltipEl.style.opacity = "1";
 }
 
-function hideTooltip() {
-  tooltip.transition().duration(200).style("opacity", 0);
+export function hideTooltip() {
+  if (!tooltipEl) return;
+  tooltipEl.style.opacity = "0";
 }
-
-export { initTooltip, showTooltip, hideTooltip };

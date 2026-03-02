@@ -1,41 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bivariate Map — GHG Emissions &amp; Climate Transition in the EU</title>
+  <title>Pobreza y transición territorial en Chile</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <div class="container">
     <header>
-      <h1>Emissions &amp; climate transition<br>in Europe</h1>
+      <h1>Pobreza y transición territorial<br>en Chile</h1>
       <p class="subtitle">
-        Bivariate choropleth: GHG per capita (2023) &times; emission change (2013&ndash;2023), NUTS2 regions (sub-national statistical areas)
+        Mapa bivariado: incidencia de la pobreza en 2024 y variación entre 2022 y 2024 por región.
       </p>
     </header>
 
     <div class="main-area">
       <aside class="sidebar">
         <div id="legend"></div>
+
         <div class="how-to-read">
-          <span class="how-title">How to read this map</span>
-          <p>Each region&rsquo;s color tells you <strong>two things</strong>:</p>
-          <p class="how-dimension"><strong>The color</strong> &mdash; are emissions going up or down?</p>
-          <p><span class="hl-teal">&block;</span> Teal &rarr; emissions are <strong>falling</strong></p>
-          <p><span class="hl-accent">&block;</span> Magenta &rarr; emissions are <strong>rising</strong></p>
-          <p><span class="hl-muted">&block;</span> Mauve &rarr; <strong>little change</strong></p>
-          <p class="how-dimension"><strong>The shade</strong> &mdash; how much does it emit today?</p>
-          <p>Lighter = low emissions per person</p>
-          <p>Darker = high emissions per person</p>
-          <p class="how-example">Example: <span class="hl-teal-dark">dark teal</span> = a big emitter, but improving.</p>
-          <p class="how-hover">Hover any region for exact figures.</p>
+          <span class="how-title">Cómo leer este mapa</span>
+          <p>Cada región combina <strong>dos dimensiones</strong>:</p>
+
+          <p class="how-dimension"><strong>El color</strong> — ¿la pobreza aumentó o disminuyó entre 2022 y 2024?</p>
+          <p><span class="hl-teal">&block;</span> Teal → la pobreza <strong>disminuye</strong></p>
+          <p><span class="hl-accent">&block;</span> Magenta → la pobreza <strong>aumenta</strong></p>
+          <p><span class="hl-muted">&block;</span> Lila → la variación es <strong>leve o cercana a cero</strong></p>
+
+          <p class="how-dimension"><strong>La intensidad</strong> — ¿qué tan alta es la pobreza en 2024?</p>
+          <p>Más claro = menor incidencia de pobreza</p>
+          <p>Más oscuro = mayor incidencia de pobreza</p>
+
+          <p class="how-example">
+            Ejemplo: <span class="hl-teal-dark">teal oscuro</span> = una región con pobreza alta en 2024, pero con mejora reciente.
+          </p>
+          <p class="how-hover">Pasa el cursor sobre una región para ver sus valores exactos.</p>
+          <p class="how-hover"><strong>Nota:</strong> “pp” significa puntos porcentuales.</p>
         </div>
+
         <p id="insight" class="insight"></p>
       </aside>
+
       <div class="map-wrapper">
         <div id="map"></div>
       </div>
@@ -44,12 +54,17 @@
     <footer class="sources">
       <span id="meta" class="meta-inline"></span>
       <span class="sep">&middot;</span>
-      EDGAR JRC v2024
-      (DOI: <a href="https://doi.org/10.2905/D67EEDA8-C03E-4421-95D0-0ADC460B9658" target="_blank">10.2905/D67EEDA8&hellip;</a>) &middot;
-      Eurostat demo_r_d2jan &middot; GISCO Nuts2json &middot;
-      CC BY 4.0 &middot;
-      <span class="note">EDGAR gridded data downscaled to NUTS2 via spatial allocation. ES/IT/FR include micro-state emissions (Andorra, San Marino, Monaco). Some regions lack data.</span>
-      <span class="credit">Design by Yusnelkis Milan&eacute;s Guisado</span>
+      Ministerio de Desarrollo Social y Familia · Encuesta CASEN 2024
+      <span class="sep">&middot;</span>
+      Base geográfica: geoBoundaries ADM1 Chile
+      <span class="sep">&middot;</span>
+      Visualización bivariada con D3.js y TopoJSON
+      <span class="sep">&middot;</span>
+      <span class="note">
+        La incidencia corresponde a 2024 y la variación territorial se expresa en puntos porcentuales entre 2022 y 2024.
+        Al 95% de confianza, las variaciones no son estadísticamente significativas en Maule, Los Ríos y Aysén.
+      </span>
+      <span class="credit">Autor: Bruno San Martín Navarro</span>
     </footer>
   </div>
 

@@ -6,6 +6,13 @@ const TOPO_URL = "data/chile_adm1.topojson";
 const DATA_URL = "data/chile_data.csv";
 const REQUIRED_ID = "shapeID";
 
+function fmt1(value) {
+  return new Intl.NumberFormat("es-CL", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1
+  }).format(Number(value));
+}
+
 async function init() {
   const [topo, csvRaw] = await Promise.all([
     d3.json(TOPO_URL),
@@ -18,10 +25,12 @@ async function init() {
   const objectKey = Object.keys(topo.objects)[0];
   const geojson = topojson.feature(topo, topo.objects[objectKey]);
 
-  if (!geojson?.features?.length) throw new Error("No se pudieron extraer features del TopoJSON");
+  if (!geojson?.features?.length) {
+    throw new Error("No se pudieron extraer features del TopoJSON");
+  }
 
-  const VAR_A = "x";
-  const VAR_B = "y";
+  const VAR_A = "x"; // pobreza 2024
+  const VAR_B = "y"; // cambio 2022-2024
   const cols = Object.keys(csvRaw[0]);
 
   if (!cols.includes(REQUIRED_ID)) {
@@ -58,9 +67,28 @@ async function init() {
       geojson
     );
 
+  // Ajuste fino para Chile:
+  // - agrandar un poco el mapa
+  // - moverlo levemente hacia la izquierda
+  // - subirlo un poco para que aproveche mejor el alto
+  const escalaActual = projection.scale();
+  const [tx, ty] = projection.translate();
+
+  projection
+    .scale(escalaActual * 1.40)
+    .translate([tx - 18, ty - 170]);
+
   const path = d3.geoPath(projection);
 
-  initTooltip({ keyA: VAR_A, keyB: VAR_B });
+  initTooltip({
+    keyA: VAR_A,
+    keyB: VAR_B,
+    keySig: "cambio_pobreza_significativo_95",
+    labelA: "Pobreza 2024",
+    labelB: "Cambio 2022–2024",
+    labelSig: "Significancia 95%",
+    nameKey: "name"
+  });
 
   svg.append("g")
     .attr("class", "regions")
@@ -86,9 +114,11 @@ async function init() {
       const key = String(d.properties.shapeID);
       const record = dataMap.get(key);
       if (!record) return;
+
       d3.select(event.currentTarget)
         .attr("stroke", "#2a2a2a")
         .attr("stroke-width", 1.5);
+
       showTooltip(event, record);
     })
     .on("mousemove", (event, d) => {
@@ -104,8 +134,8 @@ async function init() {
     });
 
   drawLegend("#legend", {
-    labelA: "Variable X",
-    labelB: "Variable Y",
+    labelA: "Pobreza 2024 (%)",
+    labelB: "Cambio 2022–2024 (pp)",
     onCellHover(classA, classB) {
       svg.selectAll(".region")
         .transition()
@@ -122,17 +152,25 @@ async function init() {
     }
   });
 
-  const insight = document.getElementById("insight");
-  if (insight) {
-    insight.innerHTML =
-      `Mapa bivariado de <strong>Chile</strong> por regiones.<br>` +
-      `Registros: ${classified.length}.`;
-  }
+  const mayorPobreza = classified.reduce((a, b) => b[VAR_A] > a[VAR_A] ? b : a);
+  const menorPobreza = classified.reduce((a, b) => b[VAR_A] < a[VAR_A] ? b : a);
+  const mayorMejora = classified.reduce((a, b) => b[VAR_B] < a[VAR_B] ? b : a);
+  const mayorDeterioro = classified.reduce((a, b) => b[VAR_B] > a[VAR_B] ? b : a);
+
+  document.getElementById("insight").innerHTML =
+    `Se analizaron 16 regiones. ` +
+    `La mayor incidencia de pobreza en 2024 se observa en <strong>${mayorPobreza.name}</strong> ` +
+    `(${fmt1(mayorPobreza[VAR_A])}%), mientras que <strong>${menorPobreza.name}</strong> registra el nivel más bajo ` +
+    `(${fmt1(menorPobreza[VAR_A])}%). ` +
+    `La mayor reducción entre 2022 y 2024 se presenta en <strong>${mayorMejora.name}</strong> ` +
+    `(${fmt1(mayorMejora[VAR_B])} pp). ` +
+    `El mayor aumento corresponde a <strong>${mayorDeterioro.name}</strong> ` +
+    `(+${fmt1(mayorDeterioro[VAR_B])} pp), aunque esta variación no es estadísticamente significativa al 95%.`;
 
   const meta = document.getElementById("meta");
   if (meta) {
     meta.textContent =
-      `${classified.length} regiones · Chile · X breaks: ${breaksA.map(b => b.toFixed(1)).join(", ")} · Y: ${breaksB.map(b => b.toFixed(1)).join(", ")}`;
+      `${classified.length} regiones · Chile · Pobreza 2024: ${breaksA.map(b => fmt1(b)).join(", ")}% · Cambio 2022–2024: ${breaksB.map(b => fmt1(b)).join(", ")} pp`;
   }
 }
 

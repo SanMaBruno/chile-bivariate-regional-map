@@ -65,13 +65,13 @@ function drawLegend(selector, { labelA, labelB, onCellHover, onCellLeave } = {})
   g.append("text")
     .attr("x", -2).attr("y", size + 28)
     .attr("class", "legend-corner")
-    .text("Low, falling");
+    .text("Menor pobreza, disminuye");
 
   g.append("text")
     .attr("x", size + 2).attr("y", -8)
     .attr("text-anchor", "end")
     .attr("class", "legend-corner")
-    .text("High, rising");
+    .text("Mayor pobreza, aumenta");
 
   // --- No data indicator ---
   const ndY = size + 40;
@@ -83,7 +83,7 @@ function drawLegend(selector, { labelA, labelB, onCellHover, onCellLeave } = {})
     .attr("x", 16).attr("y", ndY + 10)
     .attr("class", "legend-label")
     .style("text-transform", "none")
-    .text("No data");
+    .text("Sin datos");
 
   return svg;
 }

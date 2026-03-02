@@ -4,6 +4,8 @@ Mapa bivariado interactivo de Chile por regiones, desarrollado con **D3.js** y *
 
 Este proyecto forma parte de mi portafolio de **Data Science**, **visualización de datos** y **desarrollo de soluciones interactivas** orientadas al análisis territorial.
 
+**Nota metodológica:** Las variaciones 2022–2024 no son estadísticamente significativas al 95% en Maule, Los Ríos y Aysén.
+
 ---
 
 ## 📌 Descripción
