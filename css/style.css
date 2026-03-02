@@ -422,3 +422,13 @@ header{
 .tooltip-bad{
   color: #c24e80 !important;
 }
+
+.sources a{
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sources a:hover{
+  opacity: 0.8;
+}

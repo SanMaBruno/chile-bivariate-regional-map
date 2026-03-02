@@ -1,62 +1,97 @@
-# 🇨🇱 Chile Bivariate Regional Map
+# Pobreza y transición territorial en Chile
 
-Mapa bivariado interactivo de Chile por regiones, desarrollado con **D3.js** y **TopoJSON**, reutilizando y adaptando una plantilla de visualización territorial originalmente pensada para otro contexto geográfico.
+<p align="left">
+  Visualización bivariada regional para analizar la relación entre <strong>incidencia de pobreza en 2024</strong> y su <strong>variación entre 2022 y 2024</strong> en Chile.
+</p>
 
-Este proyecto forma parte de mi portafolio de **Data Science**, **visualización de datos** y **desarrollo de soluciones interactivas** orientadas al análisis territorial.
+<p align="left">
+  <a href="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"></a>
+  <a href="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"></a>
+  <a href="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111" alt="JavaScript"></a>
+  <a href="https://img.shields.io/badge/D3.js-F9A03C?style=for-the-badge&logo=d3.js&logoColor=white"><img src="https://img.shields.io/badge/D3.js-F9A03C?style=for-the-badge&logo=d3.js&logoColor=white" alt="D3.js"></a>
+  <a href="https://img.shields.io/badge/TopoJSON-3B3B3B?style=for-the-badge"><img src="https://img.shields.io/badge/TopoJSON-3B3B3B?style=for-the-badge" alt="TopoJSON"></a>
+  <a href="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
+</p>
 
-**Nota metodológica:** Las variaciones 2022–2024 no son estadísticamente significativas al 95% en Maule, Los Ríos y Aysén.
+![Vista previa del mapa](docs/assets/geoBoundaries-CHL-ADM1-PREVIEW.png)
 
----
+## Resumen
 
-## 📌 Descripción
+Este proyecto presenta un mapa bivariado interactivo para explorar diferencias territoriales de pobreza por región en Chile. La visualización permite leer, en una sola capa:
 
-Este proyecto muestra un **mapa coroplético bivariado** de Chile a nivel regional (ADM1), donde el color permite representar simultáneamente **dos variables** sobre un mismo territorio.
+- nivel de pobreza en 2024 (intensidad del color)
+- dirección del cambio entre 2022 y 2024 (familia cromática)
 
-La visualización reutiliza una arquitectura basada en:
+El objetivo es entregar una lectura rápida y defendible para análisis territorial, con foco en comparación regional.
 
-- carga de geometrías geográficas
-- unión de datos tabulares por identificador territorial
-- clasificación bivariada
-- renderizado interactivo con D3
-- tooltip y leyenda reutilizables
+## Enfoque metodológico
 
----
+- Unidad geográfica: regiones de Chile (ADM1)
+- Join espacial-tabular: `shapeID`
+- Variable A (`x`): pobreza 2024 (%)
+- Variable B (`y`): cambio 2022–2024 (pp)
+- Clasificación: matriz bivariada 3x3 (cuantiles)
+- Interacción: tooltip con nivel, variación y significancia estadística al 95%
 
-## 🎯 Objetivo del proyecto
+## Fuentes
 
-El objetivo principal fue:
+- Ministerio de Desarrollo Social y Familia, Encuesta CASEN 2024  
+  https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2024/Resultados_Pobreza_Ingresos_Casen_2024.pdf
+- Base geográfica regional (ADM1), geoBoundaries  
+  https://www.geoboundaries.org/
 
-- adaptar una plantilla de mapa bivariado existente
-- reemplazar el mapa europeo por un mapa de Chile
-- mantener la lógica visual y el estilo del diseño original
-- construir una base reutilizable para futuros proyectos con datasets reales de Chile
+## Nota de interpretación
 
----
+- La variación 2022–2024 se expresa en puntos porcentuales (pp).
+- La significancia estadística se reporta al 95% de confianza, según la fuente oficial.
 
-## 🧰 Tecnologías utilizadas
-
-- **HTML5**
-- **CSS3**
-- **JavaScript (ES Modules)**
-- **D3.js**
-- **TopoJSON**
-- **Python HTTP Server** para entorno local
-
----
-
-## 🗂️ Estructura del proyecto
+## Estructura del proyecto
 
 ```text
-chile-bivariate-regional-map/
+.
+├── index.html
 ├── css/
 │   └── style.css
-├── data/
-│   ├── chile_adm1.topojson
-│   └── chile_data.csv
 ├── js/
 │   ├── bivariate.js
 │   ├── legend.js
 │   ├── main.js
 │   └── tooltip.js
-├── index.html
-└── README.md
+├── data/
+│   ├── chile_adm1.topojson
+│   ├── chile_data.csv
+│   ├── chile_data.backup_dummy.csv
+│   └── fuentes_casen/
+├── docs/
+│   └── assets/
+│       └── geoBoundaries-CHL-ADM1-PREVIEW.png
+└── scripts/
+    └── merge_casen_pobreza.py
+```
+
+## Ejecución local
+
+```bash
+cd ~/yusnelkis.github.io/Portafolio/bivariate-chile-map
+python3 -m http.server 8000
+```
+
+Abrir en navegador: `http://localhost:8000`
+
+## Actualización de datos
+
+Para regenerar `data/chile_data.csv` desde la base CASEN consolidada:
+
+```bash
+python3 scripts/merge_casen_pobreza.py
+```
+
+Nota: el script actual usa rutas absolutas internas del proyecto.
+
+## Contacto
+
+Si quieres conversar sobre este proyecto, colaboraciones o consultoría en analítica y visualización de datos:
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Bruno%20San%20Mart%C3%ADn%20Navarro-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sanmabruno/)
+
+Perfil: https://www.linkedin.com/in/sanmabruno/
